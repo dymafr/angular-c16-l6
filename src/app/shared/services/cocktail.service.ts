@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
-import { filter, map, tap } from "rxjs/operators";
+import { filter, first, map, tap } from "rxjs/operators";
 import { Cocktail } from "../interfaces/cocktail.interface";
 
 @Injectable({ providedIn: "root" })
@@ -11,6 +11,7 @@ export class CocktailService {
   public getCocktail(index: number): Observable<Cocktail> {
     return this.cocktails$.pipe(
       filter((cocktails: Cocktail[]) => cocktails != null),
+      first(),
       map((cocktails: Cocktail[]) => cocktails[index])
     );
   }
