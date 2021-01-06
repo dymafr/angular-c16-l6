@@ -1,18 +1,18 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
-import { tap } from "rxjs/operators";
+import { filter, map, tap } from "rxjs/operators";
 import { Cocktail } from "../interfaces/cocktail.interface";
 
 @Injectable({ providedIn: "root" })
 export class CocktailService {
   public cocktails$: BehaviorSubject<Cocktail[]> = new BehaviorSubject(null);
 
-  public getCocktail(index: number) {
-    const cocktails = this.cocktails$.value;
-    if (cocktails) {
-      return cocktails[index];
-    }
+  public getCocktail(index: number): Observable<Cocktail> {
+    return this.cocktails$.pipe(
+      filter((cocktails: Cocktail[]) => cocktails != null),
+      map((cocktails: Cocktail[]) => cocktails[index])
+    );
   }
 
   public addCocktail(cocktail: Cocktail): void {
